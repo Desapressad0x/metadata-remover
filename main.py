@@ -13,7 +13,6 @@ def clear_vid(arq):
     keys = v.tags.keys()
     for tag in list(keys):
         del v.tags[tag]
-        print(v.tags)
     v.save()
     
     print(f'[!] The file {arq} has been cleaned and saved as {modd}')
