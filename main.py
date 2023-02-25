@@ -4,51 +4,52 @@ from PIL import Image
 import taglib
 import sys
 
-def clear_vid(arq):
-    modd = arq.split('.')
-    modd = f"{modd[0]}-new.{modd[1]}"
+def limpar_video(caminho_arquivo):
+    nome_arquivo, extensao_arquivo = os.path.splitext(caminho_arquivo)
+    novo_nome_arquivo = f"{nome_arquivo}-limpo{extensao_arquivo}"
     
-    shutil.copyfile(arq, modd)
-    v = taglib.File(modd)
-    keys = v.tags.keys()
-    for tag in list(keys):
-        del v.tags[tag]
-    v.save()
+    shutil.copyfile(caminho_arquivo, novo_nome_arquivo)
+    arquivo = taglib.File(novo_nome_arquivo)
+    tags = list(arquivo.tags.keys())
+    for tag in tags:
+        del arquivo.tags[tag]
+    arquivo.save()
     
-    print(f'[!] The file {arq} has been cleaned and saved as {modd}')
+    print(f'[!] O arquivo {caminho_arquivo} foi limpo e salvo como {novo_nome_arquivo}.')
     sys.exit()
-    
-def clear_img(arq):
-    modd = arq.split('.')
-    modd = f"{modd[0]}-new.{modd[1]}"
+
+def limpar_imagem(caminho_arquivo):
+    nome_arquivo, extensao_arquivo = os.path.splitext(caminho_arquivo)
+    novo_nome_arquivo = f"{nome_arquivo}-limpo{extensao_arquivo}"
    
-    imagem = Image.open(arq)
-    dd = list(imagem.getdata())
+    imagem = Image.open(caminho_arquivo)
+    pixels = list(imagem.getdata())
     imagem2 = Image.new(imagem.mode, imagem.size)
-    imagem2.putdata(dd)
-    imagem2.save(modd)
+    imagem2.putdata(pixels)
+    imagem2.save(novo_nome_arquivo)
 
-    print(f'[!] The file {arq} has been cleaned and saved as {modd}')
+    print(f'[!] O arquivo {caminho_arquivo} foi limpo e salvo como {novo_nome_arquivo}.')
     sys.exit()
 
-def arguments():
-    imgs = ["jpeg", "jpg"]
-    videos = ["mp4"]
+def argumentos():
+    formatos_imagem = ["jpeg", "jpg"]
+    formatos_video = ["mp4"]
     if len(sys.argv) != 2:
-        print(f"Usage: {sys.argv[0]} [file name]")
+        print(f"Uso: {sys.argv[0]} [nome do arquivo]")
         sys.exit()
-    arq = sys.argv[1]
-    if os.path.exists(arq):
-        if arq.split('.')[1] in imgs:
-            clear_img(arq)
-        elif arq.split('.')[1] in videos:
-            clear_vid(arq)
+    caminho_arquivo = sys.argv[1]
+    if os.path.exists(caminho_arquivo):
+        extensao_arquivo = caminho_arquivo.split('.')[-1]
+        if extensao_arquivo in formatos_imagem:
+            limpar_imagem(caminho_arquivo)
+        elif extensao_arquivo in formatos_video:
+            limpar_video(caminho_arquivo)
         else:
-            print('[X] Unknown file format.')
+            print('[X] Formato de arquivo desconhecido.')
             sys.exit()
     else:
-        print('[X] The file was not found.')
+        print('[X] O arquivo não foi encontrado.')
         sys.exit()
         
 if __name__ == "__main__":
-    arguments()
+    argumentos()
