@@ -4,7 +4,7 @@ from PIL import Image
 import taglib
 import sys
 
-def limpar_video(caminho_arquivo):
+def limpar_video(caminho_arquivo) -> None:
     nome_arquivo, extensao_arquivo = os.path.splitext(caminho_arquivo)
     novo_nome_arquivo = f"{nome_arquivo}-limpo{extensao_arquivo}"
     
@@ -18,7 +18,7 @@ def limpar_video(caminho_arquivo):
     print(f'[!] O arquivo {caminho_arquivo} foi limpo e salvo como {novo_nome_arquivo}.')
     sys.exit()
 
-def limpar_imagem(caminho_arquivo):
+def limpar_imagem(caminho_arquivo) -> None:
     nome_arquivo, extensao_arquivo = os.path.splitext(caminho_arquivo)
     novo_nome_arquivo = f"{nome_arquivo}-limpo{extensao_arquivo}"
    
@@ -31,7 +31,7 @@ def limpar_imagem(caminho_arquivo):
     print(f'[!] O arquivo {caminho_arquivo} foi limpo e salvo como {novo_nome_arquivo}.')
     sys.exit()
 
-def argumentos():
+def argumentos() -> None:
     formatos_imagem = ["jpeg", "jpg"]
     formatos_video = ["mp4"]
     if len(sys.argv) != 2:
